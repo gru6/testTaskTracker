@@ -1,0 +1,30 @@
+.mainContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90vw;
+  height: 90vh;
+  background-color: #d8d8d8;
+}
+
+.boxContainer{
+  position: absolute;
+  display: grid;
+  grid-template-columns:  20px 1fr 1fr;
+  grid-template-rows: 20px 1fr 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  width: 80vw;
+  height: 80vh;
+}
+
+.box {
+background-color: #fff;
+padding: 10px;
+}
+
+.vertical-title {
+  writing-mode: vertical-lr;
+  transform: rotate(-180deg);
+}
+
