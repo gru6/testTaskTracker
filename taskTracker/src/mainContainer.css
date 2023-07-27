@@ -7,6 +7,12 @@
   background-color: #d8d8d8;
 }
 
+li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
 .boxContainer{
   position: absolute;
   display: grid;

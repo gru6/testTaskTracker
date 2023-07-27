@@ -1,7 +1,8 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-interface Task {
+export interface Task {
   id: number;
+  text: string;
   completed: boolean;
 }
 
@@ -14,7 +15,7 @@ const initialState: TaskState = {
 };
 
 export const taskSlice = createSlice({
-  name: 'task',
+  name: 'tasks',
   initialState,
   reducers: {
     addTask: (state, action: PayloadAction<Task>) => {
@@ -26,7 +27,7 @@ export const taskSlice = createSlice({
     completeTask: (state, action: PayloadAction<number>) => {
       const index = state.tasks.findIndex(task => task.id === action.payload);
       if (index !== -1) {
-        state.tasks[index].completed = true;
+        state.tasks[index].completed = !state.tasks[index].completed;
       }
     },
   },
