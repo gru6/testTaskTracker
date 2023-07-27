@@ -35,3 +35,18 @@ export const taskSlice = createSlice({
 
 export const { addTask, removeTask, completeTask } = taskSlice.actions;
 export default taskSlice.reducer;
+
+
+/* 
+toDo: {
+  [ {id: 10,
+  text: "sgagagag",
+  completed: true},  {id: 12,
+    text: "145151",
+    completed: false}
+]
+ 
+}, 
+Schedule
+Delegate
+Delete */

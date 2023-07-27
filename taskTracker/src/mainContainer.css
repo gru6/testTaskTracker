@@ -20,8 +20,8 @@ li {
   grid-template-rows: 20px 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
-  width: 80vw;
-  height: 80vh;
+  width: 90vw;
+  height: 90vh;
 }
 
 .box {
