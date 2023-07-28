@@ -12,6 +12,7 @@ import { RootState } from "../storage/store.tsx";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
+import { BasicModal } from "./Modal.tsx";
 
 interface BoxProps {
   name: string;
@@ -30,11 +31,14 @@ export const TodoBox: React.FunctionComponent<BoxProps> = (props) => {
         id: new Date().getTime(),
         text: newTaskText,
         completed: false,
+        modal: false,
+        tag: [],
       };
       dispatch(addTask(newTask)); //закидываем новую таску в State изменение store через использование редуктора addTask и actions
       setNewTaskText("");
     }
   };
+
   return (
     <>
       <div className="box" id={props.name}>
@@ -44,7 +48,7 @@ export const TodoBox: React.FunctionComponent<BoxProps> = (props) => {
           label="New task"
           variant="outlined"
           size="small"
-          onChange={(event) => setNewTaskText(event.target.value)} // получаем текст из input
+          onChange={(e) => setNewTaskText(e.target.value)} // получаем текст из input
           value={newTaskText}
         />
         <Button variant="contained" size="small" onClick={handleAddBtn}>
@@ -59,7 +63,6 @@ export const TodoBox: React.FunctionComponent<BoxProps> = (props) => {
                   checked={task.completed}
                   onChange={() => dispatch(completeTask(task.id))} // по task.id меняем complete в state у конкретного task
                 />
-
                 <span
                   style={{
                     textDecoration: task.completed ? "line-through" : "none",
@@ -67,6 +70,8 @@ export const TodoBox: React.FunctionComponent<BoxProps> = (props) => {
                 >
                   {task.text}
                 </span>
+                <BasicModal editorTask={task} />{" "}
+                {/* пробрасываем данные task в модальное окно */}
                 <IconButton
                   aria-label="delete"
                   size="small"
