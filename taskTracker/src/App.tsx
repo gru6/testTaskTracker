@@ -1,18 +1,12 @@
-
-import './App.css'
-import {MainContainer} from './mainContainer';
+import "./App.css";
+import { MainContainer } from "./mainContainer";
 
 function App() {
-  
-
   return (
     <>
-  
-
-     <MainContainer/>
- 
+      <MainContainer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

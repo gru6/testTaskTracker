@@ -2,16 +2,23 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useDispatch, useSelector } from "react-redux";
-import { Task, addTask, completeTask, removeTask } from "../storage/taskSlice";
-import { RootState } from "../storage/store";
+import { Task } from "../storage/todoSlice.tsx";
+import { addTask, completeTask, removeTask } from "../storage/delegateSlice.tsx";
+import { RootState } from "../storage/store.tsx";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
-export const Box: React.FunctionComponent = () => {
+
+interface BoxProps {
+  name: string;
+  box: string;
+}
+
+export const DelegateBox: React.FunctionComponent<BoxProps> = (props) => {
   const dispatch = useDispatch();
   const [newTaskText, setNewTaskText] = React.useState("");
 
-  const allTasks = useSelector((state: RootState) => state.tasks.tasks);
+  const delegateTasks = useSelector((state: RootState) => state.delegate.tasks);
 
   const handleAddBtn: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (newTaskText !== "") {
@@ -20,15 +27,14 @@ export const Box: React.FunctionComponent = () => {
         text: newTaskText,
         completed: false,
       };
-      dispatch(addTask(newTask)); //закидываем новую таску в State
+      dispatch(addTask(newTask)); //закидываем новую таску в State изменение store через использование редуктора addTask и actions
       setNewTaskText("");
-      console.log("allTasks :>> ", allTasks);
     }
   };
   return (
     <>
-      <div className="box" id="box-1">
-        <div>To do</div>
+      <div className="box" id={props.name}>
+        <div>{props.name}</div>
         <TextField
           id="outlined-basic"
           label="New task"
@@ -42,7 +48,8 @@ export const Box: React.FunctionComponent = () => {
         </Button>
         {
           <ul>
-            {allTasks.map((task) => (
+            
+            {delegateTasks.map((task) => (
               <li key={task.id}>
                 <Checkbox
                   size="small"

@@ -1,13 +1,11 @@
 import * as React from "react";
 import "./mainContainer.css";
-import {Box} from "./components/Box";
-
-
-
+import { TodoBox } from "./components/todoBox";
+import { SheduleBox } from "./components/ScheduleBox";
+import { DelegateBox } from "./components/DelegateBox";
+import { DeleteBox } from "./components/DeleteBox";
 
 export const MainContainer: React.FunctionComponent = () => {
-
-
   return (
     <>
       <div className="mainContainer">
@@ -16,20 +14,11 @@ export const MainContainer: React.FunctionComponent = () => {
           <div>Important</div>
           <div>Less important</div>
           <div className="vertical-title">Urgent</div>
-
-          <Box/>
-          <div className="box" id="box-2">
-            Schedule
-          </div>
-
+          <TodoBox name="To Do" box="todoTasks" />
+          <SheduleBox name="Schedule" box="scheduleTasks" />
           <div className="vertical-title">Less urgent</div>
-          <div className="box" id="box-3">
-            Delegate
-          </div>
-
-          <div className="box" id="box-4">
-            Delete
-          </div>
+          <DelegateBox name="Delegate" box="delegateTasks" />
+          <DeleteBox name="Delete" box="deleteTasks" />
         </div>
       </div>
     </>

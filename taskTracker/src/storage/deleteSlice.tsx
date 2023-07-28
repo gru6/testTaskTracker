@@ -1,21 +1,13 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { Task, TaskState } from './todoSlice';
 
-export interface Task {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-interface TaskState {
-  tasks: Task[];
-}
 
 const initialState: TaskState = {
   tasks: [],
 };
 
-export const taskSlice = createSlice({
-  name: 'tasks',
+export const deleteSlice = createSlice({
+  name: 'delete',
   initialState,
   reducers: {
     addTask: (state, action: PayloadAction<Task>) => {
@@ -33,20 +25,5 @@ export const taskSlice = createSlice({
   },
 });
 
-export const { addTask, removeTask, completeTask } = taskSlice.actions;
-export default taskSlice.reducer;
-
-
-/* 
-toDo: {
-  [ {id: 10,
-  text: "sgagagag",
-  completed: true},  {id: 12,
-    text: "145151",
-    completed: false}
-]
- 
-}, 
-Schedule
-Delegate
-Delete */
+export const { addTask, removeTask, completeTask } = deleteSlice.actions;
+export default deleteSlice.reducer;
