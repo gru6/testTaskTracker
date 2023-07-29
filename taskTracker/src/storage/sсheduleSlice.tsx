@@ -6,8 +6,8 @@ const initialState: TaskState = {
   tasks: [],
 };
 
-export const sheduleSlice = createSlice({
-  name: 'shedule',
+export const sсheduleSlice = createSlice({
+  name: 'sсhedule',
   initialState,
   reducers: {
     addTask: (state, action: PayloadAction<Task>) => {
@@ -25,5 +25,5 @@ export const sheduleSlice = createSlice({
   },
 });
 
-export const { addTask, removeTask, completeTask } = sheduleSlice.actions;
-export default sheduleSlice.reducer;
+export const { addTask, removeTask, completeTask } = sсheduleSlice.actions;
+export default sсheduleSlice.reducer;

@@ -63,3 +63,14 @@ li {
   writing-mode: vertical-lr;
   transform: rotate(-180deg);
 }
+
+#item5 {
+ order: 1;
+} 
+
+#Delegate {
+  order: 2;
+}
+#Delete {
+  order: 3;
+}

@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import todoReducer from './todoSlice';
-import sheduleReducer from './sheduleSlice';
+import sсheduleReducer from './sсheduleSlice';
 import deleteReducer from './deleteSlice';
 import delegateReducer from './delegateSlice';
 
@@ -10,7 +10,7 @@ export type AppDispatch = typeof store.dispatch;
 const store = configureStore({
   reducer: {
     todo: todoReducer,
-    shedule: sheduleReducer,
+    sсhedule: sсheduleReducer,
     delegate: delegateReducer,
     delete: deleteReducer,
   },
