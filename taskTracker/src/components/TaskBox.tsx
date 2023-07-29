@@ -3,11 +3,11 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { useDispatch } from "react-redux";
 import { Task } from "../storage/todoSlice.tsx";
-
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
 import { BasicModal } from "./Modal.tsx";
+import { findHashTag, highlightHashTag } from "../utils/taskUtils.tsx";
 
 interface BoxProps {
   title: string;
@@ -20,13 +20,14 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
   const [newTaskText, setNewTaskText] = React.useState("");
 
   const handleAddBtn: React.MouseEventHandler<HTMLButtonElement> = () => {
+    console.log('newTaskText :>> ', newTaskText);
     if (newTaskText !== "") {
       const newTask: Task = {
         id: new Date().getTime(),
         text: newTaskText,
         completed: false,
         modal: false,
-        tag: [],
+        tag: findHashTag(newTaskText),
       };
       //закидываем новую таску в State изменение store через использование редуктора addTask и actions
       const actionType = `${props.box}/addTask`;
@@ -76,7 +77,8 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
                     textDecoration: task.completed ? "line-through" : "none",
                   }}
                 >
-                  {task.text}
+            
+                  {highlightHashTag (task.text)}
                 </span>
               </div>
 

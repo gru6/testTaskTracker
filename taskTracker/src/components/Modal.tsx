@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useDispatch } from "react-redux";
 import "../mainContainer.css";
+import { findHashTag } from "../utils/taskUtils";
 
 const containerStyle = {
   position: "absolute",
@@ -30,8 +31,7 @@ interface BasicModalProps {
 export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
   const [open, setOpen] = React.useState(false);
   const [newText, setNewText] = React.useState("");
-  /*   const [newTag, setNewTag] = React.useState(""); */
-  console.log("props :>> ", props);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
@@ -41,9 +41,9 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
     dispatch({ type: actionType, payload: taskID });
   };
 
-  const handleEditTask = (taskID: number, newText: string) => {
+  const handleEditTask = (taskID: number, newText: string, newTag: string[]) => {
     const actionType = `${props.box}/editTask`;
-    dispatch({ type: actionType, payload: { id: taskID, text: newText } });
+    dispatch({ type: actionType, payload: { id: taskID, text: newText, tag:  newTag} });
   };
 
   return (
@@ -73,16 +73,10 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
             label="text"
             id="text"
             defaultValue={props.editorTask.text}
-            sx={{ marginBottom: "20px" }}
+            sx={{ marginBottom: "50px" }}
             onBlur={(e) => setNewText(e.target.value)}
           />
-          <TextField
-            fullWidth
-            label="#tag"
-            id="tag"
-            defaultValue={props.editorTask.tag}
-            sx={{ marginBottom: "50px" }}
-          />
+          
 
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <IconButton
@@ -95,7 +89,7 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
             <IconButton
               aria-label="done"
               onClick={() => {
-                handleEditTask(props.editorTask.id, newText);
+                handleEditTask(props.editorTask.id, newText, findHashTag(newText));
                 setOpen(false);
               }}
             >

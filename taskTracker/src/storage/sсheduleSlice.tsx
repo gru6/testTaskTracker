@@ -21,11 +21,15 @@ export const scheduleSlice = createSlice({
         state.tasks[index].completed = !state.tasks[index].completed;
       }
     },
-    editTask: (state, action: PayloadAction<{ id: number; text: string }>) => {
-      const { id, text } = action.payload;
+    editTask: (
+      state,
+      action: PayloadAction<{ id: number; text: string; tag: string[] }>
+    ) => {
+      const { id, text, tag } = action.payload;
       const index = state.tasks.findIndex((task) => task.id === id);
       if (index !== -1) {
         state.tasks[index].text = text;
+        state.tasks[index].tag = tag;
       }
     },
   },
