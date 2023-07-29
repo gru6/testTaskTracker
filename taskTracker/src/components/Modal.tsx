@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { Task, editTask, removeTask } from "../storage/todoSlice";
+import { Task } from "../storage/todoSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, TextField, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -24,19 +24,31 @@ const containerStyle = {
 
 interface BasicModalProps {
   editorTask: Task;
+  box: string;
 }
 
 export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
   const [open, setOpen] = React.useState(false);
   const [newText, setNewText] = React.useState("");
   /*   const [newTag, setNewTag] = React.useState(""); */
-
+  console.log("props :>> ", props);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
+
+  const handleDeleteTask = (taskID: number) => {
+    const actionType = `${props.box}/removeTask`;
+    dispatch({ type: actionType, payload: taskID });
+  };
+
+  const handleEditTask = (taskID: number, newText: string) => {
+    const actionType = `${props.box}/editTask`;
+    dispatch({ type: actionType, payload: { id: taskID, text: newText } });
+  };
+
   return (
     <div>
-      <Button onClick={handleOpen} sx={{minWidth: "0px"}}>
+      <Button onClick={handleOpen} sx={{ minWidth: "0px" }}>
         <EditIcon fontSize="inherit" />
       </Button>
       <Modal
@@ -75,7 +87,7 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <IconButton
               aria-label="delete"
-              onClick={() => dispatch(removeTask(props.editorTask.id))}
+              onClick={() => handleDeleteTask(props.editorTask.id)}
             >
               <DeleteIcon fontSize="large" />
             </IconButton>
@@ -83,7 +95,7 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
             <IconButton
               aria-label="done"
               onClick={() => {
-                dispatch(editTask({ id: props.editorTask.id, text: newText }));
+                handleEditTask(props.editorTask.id, newText);
                 setOpen(false);
               }}
             >

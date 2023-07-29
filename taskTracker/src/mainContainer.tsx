@@ -6,7 +6,7 @@ import { RootState } from "./storage/store";
 
 export const MainContainer: React.FunctionComponent = () => {
   const todoTasks = useSelector((state: RootState) => state.todo.tasks);
-  const scheduleTasks = useSelector((state: RootState) => state.sсhedule.tasks);
+  const scheduleTasks = useSelector((state: RootState) => state.schedule.tasks);
   const delegateTasks = useSelector((state: RootState) => state.delegate.tasks);
   const deleteTasks = useSelector((state: RootState) => state.delete.tasks);
 
@@ -21,18 +21,10 @@ export const MainContainer: React.FunctionComponent = () => {
           <div className="vertical-title" id="item5">
             Less urgent
           </div>
-          <TaskBox name="To Do" box="todoTasks" tasks={todoTasks} />
-          <TaskBox
-            name="Schedule"
-            box="scheduleTasks"
-            tasks={scheduleTasks}
-          />
-          <TaskBox
-            name="Delegate"
-            box="delegateTasks"
-            tasks={delegateTasks}
-          />
-          <TaskBox name="Delete" box="deleteTasks" tasks={deleteTasks} />
+          <TaskBox title="To Do" box="todo" tasks={todoTasks} />
+          <TaskBox title="Schedule" box="schedule" tasks={scheduleTasks} />
+          <TaskBox title="Delegate" box="delegate" tasks={delegateTasks} />
+          <TaskBox title="Delete" box="delete" tasks={deleteTasks} />
         </div>
       </div>
     </>
