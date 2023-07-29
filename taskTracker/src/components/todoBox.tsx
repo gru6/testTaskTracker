@@ -58,27 +58,33 @@ export const TodoBox: React.FunctionComponent<BoxProps> = (props) => {
           <ul>
             {todoTasks.map((task) => (
               <li key={task.id}>
-                <Checkbox
-                  size="small"
-                  checked={task.completed}
-                  onChange={() => dispatch(completeTask(task.id))} // по task.id меняем complete в state у конкретного task
-                />
-                <span
-                  style={{
-                    textDecoration: task.completed ? "line-through" : "none",
-                  }}
-                >
-                  {task.text}
-                </span>
-                <BasicModal editorTask={task} />{" "}
-                {/* пробрасываем данные task в модальное окно */}
-                <IconButton
-                  aria-label="delete"
-                  size="small"
-                  onClick={() => dispatch(removeTask(task.id))}
-                >
-                  <DeleteIcon fontSize="inherit" />
-                </IconButton>
+                <div className="text-container">
+                  <Checkbox
+                    size="small"
+                    checked={task.completed}
+                    onChange={() => dispatch(completeTask(task.id))} // по task.id меняем complete в state у конкретного task
+                  />
+                  <span
+                    className="task-text"
+                    style={{
+                      textDecoration: task.completed ? "line-through" : "none",
+                    }}
+                  >
+                    {task.text}
+                  </span>
+                </div>
+
+                <div className="task-actions">
+                  <BasicModal editorTask={task} />
+                  {/* пробрасываем данные task в модальное окно */}
+                  <IconButton
+                    aria-label="delete"
+                    size="small"
+                    onClick={() => dispatch(removeTask(task.id))}
+                  >
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
+                </div>
               </li>
             ))}
           </ul>

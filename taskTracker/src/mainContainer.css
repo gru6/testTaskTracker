@@ -7,16 +7,11 @@
   background-color: #d8d8d8;
 }
 
-li {
-  list-style: none;
-  display: flex;
-  align-items: center;
-}
-
-.boxContainer{
+.boxContainer {
+  max-width: 100%;
   position: absolute;
   display: grid;
-  grid-template-columns:  20px 1fr 1fr;
+  grid-template-columns: 20px 1fr 1fr;
   grid-template-rows: 20px 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
@@ -25,12 +20,46 @@ li {
 }
 
 .box {
-background-color: #fff;
-padding: 10px;
+  background-color: #fff;
+  padding: 10px;
+  overflow: auto;
 }
+
+ul {
+  padding-inline-start: 0;
+}
+
+li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  /* Предотвращаем перенос текста на новую строку */
+  overflow: hidden;
+  /* Скрываем все содержимое, которое не помещается внутри блока */
+  text-overflow: ellipsis;
+}
+
+.text-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.task-text {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.task-actions {
+  display: flex;
+}
+
 
 .vertical-title {
   writing-mode: vertical-lr;
   transform: rotate(-180deg);
 }
-

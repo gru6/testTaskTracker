@@ -5,7 +5,6 @@ import Modal from "@mui/material/Modal";
 import { Task, editTask, removeTask } from "../storage/todoSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, TextField, Typography } from "@mui/material";
-import Grid from '@mui/material/Unstable_Grid2';
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useDispatch } from "react-redux";
@@ -17,7 +16,6 @@ const containerStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "50vw",
-  height: "50vh",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -31,15 +29,14 @@ interface BasicModalProps {
 export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
   const [open, setOpen] = React.useState(false);
   const [newText, setNewText] = React.useState("");
-/*   const [newTag, setNewTag] = React.useState(""); */
+  /*   const [newTag, setNewTag] = React.useState(""); */
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
   return (
     <div>
-      <Button onClick={handleOpen}>
-        {" "}
+      <Button onClick={handleOpen} sx={{minWidth: "0px"}}>
         <EditIcon fontSize="inherit" />
       </Button>
       <Modal
@@ -75,29 +72,24 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
             sx={{ marginBottom: "50px" }}
           />
 
-          <Grid container columns={2}>
-            <Grid xs={1} sx={{ textAlign: "center" }}>
-              <IconButton
-                aria-label="delete"
-                onClick={() => dispatch(removeTask(props.editorTask.id))}   
-              >
-                <DeleteIcon fontSize="large" />
-              </IconButton>
-            </Grid>
-            <Grid xs={1} sx={{ textAlign: "center" }}>
-              <IconButton
-                aria-label="done"
-                onClick={() => {
-                  dispatch(
-                    editTask({ id: props.editorTask.id, text: newText })
-                  );
-                  setOpen(false);
-                }}
-              >
-                <CheckCircleOutlineIcon fontSize="large" />
-              </IconButton>
-            </Grid>
-          </Grid>
+          <div style={{ display: "flex", justifyContent: "space-evenly" }}>
+            <IconButton
+              aria-label="delete"
+              onClick={() => dispatch(removeTask(props.editorTask.id))}
+            >
+              <DeleteIcon fontSize="large" />
+            </IconButton>
+
+            <IconButton
+              aria-label="done"
+              onClick={() => {
+                dispatch(editTask({ id: props.editorTask.id, text: newText }));
+                setOpen(false);
+              }}
+            >
+              <CheckCircleOutlineIcon fontSize="large" />
+            </IconButton>
+          </div>
         </Box>
       </Modal>
     </div>

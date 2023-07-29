@@ -11,8 +11,8 @@ const store = configureStore({
   reducer: {
     todo: todoReducer,
     shedule: sheduleReducer,
-    delete: deleteReducer,
     delegate: delegateReducer,
+    delete: deleteReducer,
   },
 });
 store.subscribe(() => {
