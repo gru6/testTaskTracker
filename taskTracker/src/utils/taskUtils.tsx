@@ -1,18 +1,26 @@
 export const highlightHashTag = (text: string) => {
-  return text.split(/(#\S+)/g).map((fragment, index) => {
-    if (fragment.startsWith("#")) {
+  const words = text.split(/(\s+)/);
+/*   console.log('words', words) */
+  const highlightedText = words.map((word, index) => {
+    if (word.startsWith("#")) {
       return (
         <span key={index} className="highlight">
-          {fragment}
+          {word}
         </span>
       );
     } else {
-      return <span key={index}>{fragment}</span>;
+      return word;
     }
   });
+  return <>{highlightedText}</>;
 };
 
 export const findHashTag = (text: string) => {
-  const matches = text.match(/#\S+/g);
-  return matches ? matches.map((tag) => tag) : []; //проверка на null
+  const matches = text.match(/#(\S+?(?=\s|$))/g);
+  return matches ? matches.map((tag) => tag) : [];
 };
+
+
+export const delHashTagFromText = (text: string) => {
+  return text.replace(/#/g, "");
+}

@@ -2,10 +2,11 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export interface Task {
   id: number;
+  fullText: string;
   text: string;
+  tag: string[];
   completed: boolean;
   modal: boolean;
-  tag: string[];
 }
 
 export interface TaskState {
@@ -34,12 +35,13 @@ export const todoSlice = createSlice({
     },
     editTask: (
       state,
-      action: PayloadAction<{ id: number; text: string; tag: string[] }>
+      action: PayloadAction<{ id: number; text: string; tag: string[], fullText: string }>
     ) => {
-      const { id, text, tag } = action.payload;
+      const { id, text, tag, fullText } = action.payload;
       const index = state.tasks.findIndex((task) => task.id === id);
       if (index !== -1) {
         state.tasks[index].text = text;
+        state.tasks[index].fullText = fullText;
         state.tasks[index].tag = tag;
       }
     },

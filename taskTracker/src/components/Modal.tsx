@@ -4,12 +4,12 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Task } from "../storage/todoSlice";
 import EditIcon from "@mui/icons-material/Edit";
-import { IconButton, TextField, Typography } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useDispatch } from "react-redux";
 import "../mainContainer.css";
-import { findHashTag } from "../utils/taskUtils";
+import { delHashTagFromText, findHashTag, highlightHashTag } from "../utils/taskUtils";
 
 const containerStyle = {
   position: "absolute",
@@ -26,12 +26,14 @@ const containerStyle = {
 interface BasicModalProps {
   editorTask: Task;
   box: string;
+  id: number;
 }
 
 export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
   const [open, setOpen] = React.useState(false);
-  const [newText, setNewText] = React.useState("");
+  const [newText, setNewText] = React.useState(props.editorTask.fullText);
 
+/* console.log('newText', newText) */
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
@@ -41,9 +43,16 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
     dispatch({ type: actionType, payload: taskID });
   };
 
-  const handleEditTask = (taskID: number, newText: string, newTag: string[]) => {
+  const handleEditTask = (
+    taskID: number,
+    newText: string,
+    newTag: string[]
+  ) => {
     const actionType = `${props.box}/editTask`;
-    dispatch({ type: actionType, payload: { id: taskID, text: newText, tag:  newTag} });
+    dispatch({
+      type: actionType,
+      payload: { id: taskID, fullText: newText, text: delHashTagFromText(newText), tag: newTag},
+    });
   };
 
   return (
@@ -68,15 +77,23 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
             Task
           </Typography>
 
-          <TextField
+          {/*           <TextField
             fullWidth
             label="text"
             id="text"
-            defaultValue={props.editorTask.text}
+            value={highlightHashTag(props.editorTask.fullText)}
             sx={{ marginBottom: "50px" }}
             onBlur={(e) => setNewText(e.target.value)}
-          />
-          
+          /> */}
+
+{/* TODO консоль ругается на contentEditable */}
+          <div
+            className="div-input"
+            contentEditable="true"
+            onBlur={(e) => setNewText(e.target.textContent || "")}
+          >
+            {highlightHashTag(props.editorTask.fullText)}
+          </div>
 
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <IconButton
@@ -89,7 +106,11 @@ export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
             <IconButton
               aria-label="done"
               onClick={() => {
-                handleEditTask(props.editorTask.id, newText, findHashTag(newText));
+                handleEditTask(
+                  props.editorTask.id,
+                  newText,
+                  findHashTag(newText)
+                );
                 setOpen(false);
               }}
             >

@@ -7,7 +7,7 @@ import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
 import { BasicModal } from "./Modal.tsx";
-import { findHashTag, highlightHashTag } from "../utils/taskUtils.tsx";
+import { delHashTagFromText, findHashTag } from "../utils/taskUtils.tsx";
 
 interface BoxProps {
   title: string;
@@ -20,11 +20,12 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
   const [newTaskText, setNewTaskText] = React.useState("");
 
   const handleAddBtn: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log('newTaskText :>> ', newTaskText);
+/*     console.log("newTaskText :>> ", newTaskText); */
     if (newTaskText !== "") {
       const newTask: Task = {
         id: new Date().getTime(),
-        text: newTaskText,
+        fullText: newTaskText,
+        text: delHashTagFromText(newTaskText),
         completed: false,
         modal: false,
         tag: findHashTag(newTaskText),
@@ -65,33 +66,39 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
         <ul>
           {props.tasks.map((task) => (
             <li key={task.id}>
-              <div className="text-container">
+              <div className="task-container">
                 <Checkbox
                   size="small"
                   checked={task.completed}
                   onChange={() => handleCompleteTask(task.id)} // по task.id меняем complete в state у конкретного task
                 />
-                <span
-                  className="task-text"
-                  style={{
-                    textDecoration: task.completed ? "line-through" : "none",
-                  }}
-                >
-            
-                  {highlightHashTag (task.text)}
-                </span>
-              </div>
 
-              <div className="task-actions">
-                <BasicModal box={props.box} editorTask={task} />
-                {/* пробрасываем данные task в модальное окно */}
-                <IconButton
-                  aria-label="delete"
-                  size="small"
-                  onClick={() => handleDeleteTask(task.id)}
-                >
-                  <DeleteIcon fontSize="inherit" />
-                </IconButton>
+                <div className="text-container">
+                  <span
+                    className="task-text"
+                    style={{
+                      textDecoration: task.completed ? "line-through" : "none",
+                    }}
+                  >
+                    {task.text}
+                  </span>
+
+                  <div className="task-tag">
+                    {task.tag.map((tag) => tag + " ")}
+                  </div>
+                </div>
+
+                <div className="task-actions">
+                  <BasicModal box={props.box} editorTask={task} id={task.id}/>
+                  {/* пробрасываем данные task в модальное окно */}
+                  <IconButton
+                    aria-label="delete"
+                    size="small"
+                    onClick={() => handleDeleteTask(task.id)}
+                  >
+                    <DeleteIcon fontSize="inherit" />
+                  </IconButton>
+                </div>
               </div>
             </li>
           ))}

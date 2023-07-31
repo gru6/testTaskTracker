@@ -23,12 +23,13 @@ export const delegateSlice = createSlice({
     },
     editTask: (
       state,
-      action: PayloadAction<{ id: number; text: string; tag: string[] }>
+      action: PayloadAction<{ id: number; text: string; tag: string[], fullText: string }>
     ) => {
-      const { id, text, tag } = action.payload;
+      const { id, text, tag, fullText } = action.payload;
       const index = state.tasks.findIndex((task) => task.id === id);
       if (index !== -1) {
         state.tasks[index].text = text;
+        state.tasks[index].fullText = fullText;
         state.tasks[index].tag = tag;
       }
     },

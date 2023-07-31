@@ -34,30 +34,42 @@ li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  white-space: nowrap;
-  /* Предотвращаем перенос текста на новую строку */
+  /*   white-space: nowrap;
   overflow: hidden;
-  /* Скрываем все содержимое, которое не помещается внутри блока */
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; */
 }
 
-.text-container {
+.task-container {
   display: flex;
   align-items: center;
   flex-grow: 1;
   overflow: hidden;
+  justify-content: space-between;
 }
 
-.task-text {
+.text-container {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.task-text,
+.task-tag {
   text-align: left;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
+.task-tag {
+  color: rgb(79, 136, 241)
+}
+
 
 .task-actions {
   display: flex;
 }
-
 
 .vertical-title {
   writing-mode: vertical-lr;
@@ -65,17 +77,18 @@ li {
 }
 
 #item5 {
- order: 1;
-} 
+  order: 1;
+}
 
 #Delegate {
   order: 2;
 }
+
 #Delete {
   order: 3;
 }
 
 .highlight {
-  color: rgb(79, 136, 241); 
- 
+  color: rgb(79, 136, 241);
+
 }
