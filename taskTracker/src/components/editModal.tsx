@@ -23,13 +23,13 @@ const containerStyle = {
   p: 4,
 };
 
-interface BasicModalProps {
+interface EditModalProps {
   editorTask: Task;
   box: string;
   id: number;
 }
 
-export const BasicModal: React.FunctionComponent<BasicModalProps> = (props) => {
+export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
   const [open, setOpen] = React.useState(false);
   const [newText, setNewText] = React.useState(props.editorTask.fullText);
 

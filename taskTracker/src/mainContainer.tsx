@@ -3,6 +3,8 @@ import "./mainContainer.css";
 import { TaskBox } from "./components/TaskBox";
 import { useSelector } from "react-redux";
 import { RootState } from "./storage/store";
+import { FilterModal } from "./components/filterModal";
+import { findAllTags } from "./utils/filterUtils";
 
 export const MainContainer: React.FunctionComponent = () => {
   const todoTasks = useSelector((state: RootState) => state.todo.tasks);
@@ -12,6 +14,7 @@ export const MainContainer: React.FunctionComponent = () => {
 
   return (
     <>
+      <FilterModal tags={findAllTags()}></FilterModal>
       <div className="mainContainer">
         <div className="boxContainer">
           <div></div>

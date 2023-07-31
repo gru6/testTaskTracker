@@ -6,7 +6,7 @@ import { Task } from "../storage/todoSlice.tsx";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
-import { BasicModal } from "./Modal.tsx";
+import { EditModal } from "./editModal.tsx";
 import { delHashTagFromText, findHashTag } from "../utils/taskUtils.tsx";
 
 interface BoxProps {
@@ -29,6 +29,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
         completed: false,
         modal: false,
         tag: findHashTag(newTaskText),
+        filteredtags: [],
       };
       //закидываем новую таску в State изменение store через использование редуктора addTask и actions
       const actionType = `${props.box}/addTask`;
@@ -89,7 +90,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
                 </div>
 
                 <div className="task-actions">
-                  <BasicModal box={props.box} editorTask={task} id={task.id}/>
+                  <EditModal box={props.box} editorTask={task} id={task.id}/>
                   {/* пробрасываем данные task в модальное окно */}
                   <IconButton
                     aria-label="delete"

@@ -7,6 +7,7 @@ export interface Task {
   tag: string[];
   completed: boolean;
   modal: boolean;
+  filteredtags: string[];
 }
 
 export interface TaskState {
