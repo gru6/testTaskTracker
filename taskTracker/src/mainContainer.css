@@ -25,6 +25,12 @@
   overflow: auto;
 }
 
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 ul {
   padding-inline-start: 0;
 }

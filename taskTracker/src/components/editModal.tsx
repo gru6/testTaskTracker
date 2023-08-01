@@ -100,6 +100,7 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
             onBlur={(e) => setNewText(e.target.textContent || "")}
           >
             {highlightHashTag(props.editorTask.fullText)}
+            <span>&nbsp;</span>
           </div>
 
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>

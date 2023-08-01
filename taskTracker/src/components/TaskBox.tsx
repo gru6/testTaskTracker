@@ -59,17 +59,24 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
     <>
       <div className="box" id={props.title}>
         <div>{props.title}</div>
-        <TextField
-          id="outlined-basic"
-          label="New task"
-          variant="outlined"
-          size="small"
-          onChange={(e) => setNewTaskText(e.target.value)} // получаем текст из input
-          value={newTaskText}
-        />
-        <Button variant="contained" size="small" onClick={handleAddBtn}>
-          Add
-        </Button>
+        <div className="input-container">
+          <TextField
+            id="outlined-basic"
+            label="New task"
+            variant="outlined"
+            size="small"
+            onChange={(e) => setNewTaskText(e.target.value)} // получаем текст из input
+            value={newTaskText}
+          />
+          <Button
+            variant="contained"
+            size="small"
+            onClick={handleAddBtn}
+            sx={{ marginLeft: "10px" }}
+          >
+            Add
+          </Button>
+        </div>
 
         <ul>
           {filteredTasks.map((task) => (

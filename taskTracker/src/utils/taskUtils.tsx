@@ -1,7 +1,7 @@
 import { Dispatch } from "redux";
 
 export const highlightHashTag = (text: string) => {
-  const words = text.split(/(\s+)/);
+  const words = text.split(/\b(\s+)/);
   const highlightedText = words.map((word, index) => {
     if (word.startsWith("#")) {
       return (
