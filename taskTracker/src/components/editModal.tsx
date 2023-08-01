@@ -9,7 +9,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useDispatch } from "react-redux";
 import "../mainContainer.css";
-import { delHashTagFromText, findHashTag, highlightHashTag } from "../utils/taskUtils";
+import {
+  delHashTagSymbol,
+  findHashTag,
+  handleDeleteTask,
+  highlightHashTag,
+} from "../utils/taskUtils";
+import { addFilterTag } from "../storage/filterSlice";
 
 const containerStyle = {
   position: "absolute",
@@ -33,15 +39,9 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
   const [open, setOpen] = React.useState(false);
   const [newText, setNewText] = React.useState(props.editorTask.fullText);
 
-/* console.log('newText', newText) */
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const dispatch = useDispatch();
-
-  const handleDeleteTask = (taskID: number) => {
-    const actionType = `${props.box}/removeTask`;
-    dispatch({ type: actionType, payload: taskID });
-  };
 
   const handleEditTask = (
     taskID: number,
@@ -51,8 +51,14 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
     const actionType = `${props.box}/editTask`;
     dispatch({
       type: actionType,
-      payload: { id: taskID, fullText: newText, text: delHashTagFromText(newText), tag: newTag},
+      payload: {
+        id: taskID,
+        fullText: newText,
+        text: delHashTagSymbol(newText),
+        tag: newTag,
+      },
     });
+    dispatch(addFilterTag({ filter: [] })); // при редактировании tag сбрасываем его в store
   };
 
   return (
@@ -77,7 +83,8 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
             Task
           </Typography>
 
-          {/*           <TextField
+          {/* было так до contentEditable      
+              <TextField
             fullWidth
             label="text"
             id="text"
@@ -86,7 +93,7 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
             onBlur={(e) => setNewText(e.target.value)}
           /> */}
 
-{/* TODO консоль ругается на contentEditable */}
+          {/* TODO консоль ругается на contentEditable */}
           <div
             className="div-input"
             contentEditable="true"
@@ -98,7 +105,14 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <IconButton
               aria-label="delete"
-              onClick={() => handleDeleteTask(props.editorTask.id)}
+              onClick={() =>
+                handleDeleteTask(
+                  dispatch,
+                  props.editorTask.id,
+                  props.editorTask.tag,
+                  props.box
+                )
+              }
             >
               <DeleteIcon fontSize="large" />
             </IconButton>

@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import {
   Checkbox,
+  FormControl,
   FormControlLabel,
   FormGroup,
   IconButton,
@@ -11,6 +12,9 @@ import {
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import "../mainContainer.css";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../storage/store";
+import { addFilterTag } from "../storage/filterSlice";
 
 const containerStyle = {
   position: "absolute",
@@ -33,8 +37,27 @@ export const FilterModal: React.FunctionComponent<FilterModalProps> = (
 ) => {
   const [open, setOpen] = React.useState(false);
 
+  const filteredTag = useSelector((state: RootState) => state.filter);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checkedTag = event.target.name;
+
+    if (event.target.checked) {
+      // закидываем в store фильтрующие tags
+      dispatch(addFilterTag({ filter: [...filteredTag, checkedTag] }));
+    } else {
+      // убираем из store фильтрующие tags по checkbox
+      dispatch(
+        addFilterTag({
+          filter: filteredTag.filter((tag) => tag !== checkedTag),
+        })
+      );
+    }
+  };
 
   return (
     <div style={{ paddingLeft: "30px" }}>
@@ -63,13 +86,27 @@ export const FilterModal: React.FunctionComponent<FilterModalProps> = (
             Chose #tags
           </Typography>
 
-          <FormGroup>
-            {props.tags.map((tag) => (
-              <FormControlLabel control={<Checkbox />} label={tag} />
-            ))}
-          </FormGroup>
+          <FormControl component="fieldset">
+            <FormGroup>
+              {props.tags.length === 0 ? (
+                <div>No tags</div>
+              ) : (
+                props.tags.map((tag) => (
+                  <FormControlLabel
+                    key={tag}
+                    control={<Checkbox />}
+                    label={tag}
+                    checked={filteredTag.includes(tag)}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    onChange={(e: any) => handleCheckboxChange(e)}
+                    name={tag}
+                  />
+                ))
+              )}
+            </FormGroup>
+          </FormControl>
 
-          <div style={{ display: "flex", justifyContent:"center" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <IconButton
               aria-label="done"
               onClick={() => {

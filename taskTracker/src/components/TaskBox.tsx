@@ -1,13 +1,18 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Task } from "../storage/todoSlice.tsx";
 import { IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
 import { EditModal } from "./editModal.tsx";
-import { delHashTagFromText, findHashTag } from "../utils/taskUtils.tsx";
+import {
+  delHashTagSymbol,
+  findHashTag,
+  handleDeleteTask,
+} from "../utils/taskUtils.tsx";
+import { RootState } from "../storage/store.tsx";
 
 interface BoxProps {
   title: string;
@@ -19,13 +24,20 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
   const dispatch = useDispatch();
   const [newTaskText, setNewTaskText] = React.useState("");
 
+  const filteredTags = useSelector((state: RootState) => state.filter);
+
+  const filteredTasks = props.tasks.filter((task) => {
+    if (filteredTags.length > 0) {
+      return filteredTags.some((tag) => task.tag.includes(tag));
+    } else return true;
+  });
+
   const handleAddBtn: React.MouseEventHandler<HTMLButtonElement> = () => {
-/*     console.log("newTaskText :>> ", newTaskText); */
     if (newTaskText !== "") {
       const newTask: Task = {
         id: new Date().getTime(),
         fullText: newTaskText,
-        text: delHashTagFromText(newTaskText),
+        text: delHashTagSymbol(newTaskText),
         completed: false,
         modal: false,
         tag: findHashTag(newTaskText),
@@ -40,11 +52,6 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
 
   const handleCompleteTask = (taskID: number) => {
     const actionType = `${props.box}/completeTask`;
-    dispatch({ type: actionType, payload: taskID });
-  };
-
-  const handleDeleteTask = (taskID: number) => {
-    const actionType = `${props.box}/removeTask`;
     dispatch({ type: actionType, payload: taskID });
   };
 
@@ -65,7 +72,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
         </Button>
 
         <ul>
-          {props.tasks.map((task) => (
+          {filteredTasks.map((task) => (
             <li key={task.id}>
               <div className="task-container">
                 <Checkbox
@@ -90,12 +97,14 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
                 </div>
 
                 <div className="task-actions">
-                  <EditModal box={props.box} editorTask={task} id={task.id}/>
+                  <EditModal box={props.box} editorTask={task} id={task.id} />
                   {/* пробрасываем данные task в модальное окно */}
                   <IconButton
                     aria-label="delete"
                     size="small"
-                    onClick={() => handleDeleteTask(task.id)}
+                    onClick={() =>
+                      handleDeleteTask(dispatch, task.id, task.tag, props.box)
+                    }
                   >
                     <DeleteIcon fontSize="inherit" />
                   </IconButton>

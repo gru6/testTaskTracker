@@ -1,6 +1,7 @@
 import store from "../storage/store";
 
-export const findAllTags = () => {
+//отфильтровываем все tags из store
+export const findAllTagsInStore = () => {
   const obj = store.getState();
   const todoTags = obj.todo.tasks.map((task) => task.tag);
   const sheduleTags = obj.schedule.tasks.map((task) => task.tag);
