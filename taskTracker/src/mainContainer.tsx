@@ -2,7 +2,7 @@ import * as React from "react";
 import "./mainContainer.css";
 import { TaskBox } from "./components/TaskBox";
 import { useSelector } from "react-redux";
-import { RootState } from "./storage/store";
+import { RootState } from "./storage/persistStore";
 import { FilterModal } from "./components/filterModal";
 import { findAllTagsInStore } from "./utils/filterUtils";
 

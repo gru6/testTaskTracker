@@ -13,7 +13,7 @@ import {
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import "../mainContainer.css";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../storage/store";
+import { RootState } from "../storage/persistStore";
 import { addFilterTag } from "../storage/filterSlice";
 
 const containerStyle = {

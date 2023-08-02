@@ -1,4 +1,4 @@
-import store from "../storage/store";
+import {store} from '../storage/persistStore.tsx'
 
 //отфильтровываем все tags из store
 export const findAllTagsInStore = () => {

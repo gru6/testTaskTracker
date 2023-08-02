@@ -1,4 +1,6 @@
-/* import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
+import createIdbStorage from "@piotr-cz/redux-persist-idb-storage";
 import todoReducer from "./todoSlice";
 import scheduleReducer from "./sсheduleSlice";
 import deleteReducer from "./deleteSlice";
@@ -6,7 +8,6 @@ import delegateReducer from "./delegateSlice";
 import filterReducer from "./filterSlice";
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
 
 const rootReducer = combineReducers({
   todo: todoReducer,
@@ -16,11 +17,21 @@ const rootReducer = combineReducers({
   filter: filterReducer,
 });
 
+const persistConfig = {
+  key: "root",
+  storage: createIdbStorage(),
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: persistedReducer,
 });
-store.subscribe(() => {
+
+const persistor = persistStore(store);
+
+/* store.subscribe(() => {
   console.log("State updated:", store.getState());
-});
-export default store;
- */
+}); */
+
+export { store, persistor };

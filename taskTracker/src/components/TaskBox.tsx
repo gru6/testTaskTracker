@@ -12,7 +12,7 @@ import {
   findHashTag,
   handleDeleteTask,
 } from "../utils/taskUtils.tsx";
-import { RootState } from "../storage/store.tsx";
+import { RootState } from "../storage/persistStore";
 
 interface BoxProps {
   title: string;
