@@ -20,9 +20,21 @@
 }
 
 .box {
+  position: relative;
   background-color: #fff;
   padding: 10px;
   overflow: auto;
+  z-index: 100;
+}
+
+.bg-text {
+  position: absolute;
+  width: 90%;
+  margin: 0 auto;
+  bottom: 40%;
+  color: #d8d8d8;
+  font-size: 48px;
+  z-index: -1;
 }
 
 .input-container {
@@ -40,9 +52,6 @@ li {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /*   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; */
 }
 
 .task-container {

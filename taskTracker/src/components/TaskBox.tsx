@@ -58,7 +58,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
   return (
     <>
       <div className="box" id={props.title}>
-        <div>{props.title}</div>
+        <div className="bg-text">{props.title}</div>
         <div className="input-container">
           <TextField
             id="outlined-basic"

@@ -18,11 +18,11 @@ export const MainContainer: React.FunctionComponent = () => {
       <div className="mainContainer">
         <div className="boxContainer">
           <div></div>
-          <div>Important</div>
-          <div>Less important</div>
-          <div className="vertical-title">Urgent</div>
+          <div>Urgent</div>
+          <div>Less urgent</div>
+          <div className="vertical-title">Important</div>
           <div className="vertical-title" id="item5">
-            Less urgent
+            Less important
           </div>
           <TaskBox title="To Do" box="todo" tasks={todoTasks} />
           <TaskBox title="Schedule" box="schedule" tasks={scheduleTasks} />
