@@ -23,7 +23,7 @@ interface BoxProps {
 export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
   const dispatch = useDispatch();
   const [newTaskText, setNewTaskText] = React.useState("");
-
+  const [validDrop, setValidDrop] = React.useState(false);
   const filteredTags = useSelector((state: RootState) => state.filter);
 
   const filteredTasks = props.tasks.filter((task) => {
@@ -41,7 +41,6 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
         completed: false,
         modal: false,
         tag: findHashTag(newTaskText),
-        filteredtags: [],
       };
       //закидываем новую таску в State изменение store через использование редуктора addTask и actions
       const actionType = `${props.box}/addTask`;
@@ -55,9 +54,64 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
     dispatch({ type: actionType, payload: taskID });
   };
 
+  function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
+    e.preventDefault();
+    if (e.currentTarget.className === "box") {
+      e.currentTarget.style.boxShadow = "2px 2px 3px grey";
+      setValidDrop(true);
+    }
+  }
+
+  function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>): void {
+    if (e.currentTarget.className === "box") {
+      e.currentTarget.style.boxShadow = "none";
+    }
+  }
+
+  function dragStartHandler(
+    e: React.DragEvent<HTMLDivElement>,
+    task: Task
+  ): void {
+    // save the task data in the dataTransfer object
+    e.dataTransfer.setData("text/plain", JSON.stringify(task));
+  }
+
+  function dropHandler(e: React.DragEvent<HTMLDivElement>, box: string): void {
+    e.preventDefault();
+    // получаем transferred
+    const transferredData = e.dataTransfer.getData("text/plain");
+    if (transferredData) {
+      const draggedTask = JSON.parse(transferredData) as Task;  //распаршиваем
+      const actionType = `${box}/droppedTask`;       // закидываем в нужный box в Store
+      dispatch({ type: actionType, payload: draggedTask });
+    }
+    if (e.currentTarget.className === "box") {
+      e.currentTarget.style.boxShadow = "none";
+    }
+  }
+
+  function dragEndHandler(
+    box: string,
+    task: Task
+  ): void {
+    // удаляем task из начального box если drop в valid zone
+    if (validDrop) {
+      const actionType = `${box}/removeTask`; 
+      dispatch({ type: actionType, payload: task.id });
+    }
+    // Reset the validDrop state
+    setValidDrop(false);
+  }
+
   return (
     <>
-      <div className="box" id={props.title}>
+      <div
+        className="box"
+        id={props.title}
+        onDragOver={(e) => dragOverHandler(e)} // перетаскивается над допустимой зоной
+        onDragLeave={(e) => dragLeaveHandler(e)} // покидает допустимую область сброса
+        onDrop={(e) => dropHandler(e, props.box)} //элемент сброшен
+      >
         <div className="bg-text">{props.title}</div>
         <div className="input-container">
           <TextField
@@ -79,9 +133,14 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
         </div>
 
         <ul>
-          {filteredTasks.map((task) => (
+          {filteredTasks.reverse().map((task) => (
             <li key={task.id}>
-              <div className="task-container">
+              <div
+                className="task-container"
+                draggable={true}
+                onDragStart={(e) => dragStartHandler(e, task)} // начал перетаскивание
+                onDragEnd={() => dragEndHandler(props.box, task)} //завершилось перетаскивание
+              >
                 <Checkbox
                   size="small"
                   checked={task.completed}

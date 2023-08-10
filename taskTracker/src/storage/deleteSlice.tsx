@@ -33,6 +33,9 @@ export const deleteSlice = createSlice({
         state.tasks[index].tag = tag;
       }
     },
+    droppedTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
+    },
   },
 });
 

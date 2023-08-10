@@ -24,7 +24,7 @@ export const MainContainer: React.FunctionComponent = () => {
           <div className="vertical-title" id="item5">
             Less important
           </div>
-          <TaskBox title="To Do" box="todo" tasks={todoTasks} />
+          <TaskBox title="ToDo" box="todo" tasks={todoTasks} />
           <TaskBox title="Schedule" box="schedule" tasks={scheduleTasks} />
           <TaskBox title="Delegate" box="delegate" tasks={delegateTasks} />
           <TaskBox title="Delete" box="delete" tasks={deleteTasks} />

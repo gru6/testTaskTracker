@@ -7,7 +7,6 @@ export interface Task {
   tag: string[];
   completed: boolean;
   modal: boolean;
-  filteredtags: string[];
 }
 
 export interface TaskState {
@@ -45,6 +44,9 @@ export const todoSlice = createSlice({
         state.tasks[index].fullText = fullText;
         state.tasks[index].tag = tag;
       }
+    },
+    droppedTask: (state, action: PayloadAction<Task>) => {
+      state.tasks.push(action.payload);
     },
   },
 });
