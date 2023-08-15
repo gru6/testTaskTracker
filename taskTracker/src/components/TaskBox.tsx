@@ -42,7 +42,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
         modal: false,
         tag: findHashTag(newTaskText),
       };
-      //закидываем новую таску в State изменение store через использование редуктора addTask и actions
+      //закидываем новую таску в Store через использование редуктора addTask и actions
       const actionType = `${props.box}/addTask`;
       dispatch({ type: actionType, payload: newTask });
       setNewTaskText("");
@@ -144,7 +144,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
                 <Checkbox
                   size="small"
                   checked={task.completed}
-                  onChange={() => handleCompleteTask(task.id)} // по task.id меняем complete в state у конкретного task
+                  onChange={() => handleCompleteTask(task.id)} // по task.id меняем complete в Store у конкретного task
                 />
 
                 <div className="text-container">
