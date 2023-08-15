@@ -1,27 +1,18 @@
-# React + TypeScript + Vite
+# Eisenhower Task Tracker
+Базовый функционал доработан с учетом интересной концепции по организации рабочих процессов Eisenhower matrix.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Прилоение для отслеживания задач с базовым функционалом. 
+1. Создание, редактирование, удаление заметок;
+2. Просмотр списка заметок;
+3. Во время создания и редактирования заметки пользователь может создавать теги, используя символ #;
+4. Фильтр заметок по тегу заметок;
+5. При перезагрузке страницы заметки сохраняются в IndexedDb.
+6. Дополнительный функционал: Drag and drop задач по различным разделам.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Технический stack:
+1. React.js hooks;
+2. TypeScript;
+3. Material UI;
+4. Стейт менеджер Redux;
+5. Залит на гит (https://github.com/gru6/testTaskTracker);
+6. Залит на хост (Netlify: https://eisenhower-tracker.netlify.app/).
