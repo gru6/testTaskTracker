@@ -1,4 +1,4 @@
-.mainContainer {
+.main-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -7,7 +7,7 @@
   background-color: #d8d8d8;
 }
 
-.boxContainer {
+.box-container {
   max-width: 100%;
   position: absolute;
   display: grid;
@@ -48,18 +48,18 @@ ul {
 }
 
 li {
-  list-style: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  list-style: none;
 }
 
 .task-container {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-grow: 1;
   overflow: hidden;
-  justify-content: space-between;
 }
 
 .text-container {

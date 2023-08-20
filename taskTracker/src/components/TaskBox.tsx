@@ -24,6 +24,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
   const dispatch = useDispatch();
   const [newTaskText, setNewTaskText] = React.useState("");
   const [validDrop, setValidDrop] = React.useState(false);
+  const [boxCurrent, setBoxCurrent] = React.useState("");
   const filteredTags = useSelector((state: RootState) => state.filter);
 
   const filteredTasks = props.tasks.filter((task) => {
@@ -42,7 +43,6 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
         modal: false,
         tag: findHashTag(newTaskText),
       };
-      //закидываем новую таску в Store через использование редуктора addTask и actions
       const actionType = `${props.box}/addTask`;
       dispatch({ type: actionType, payload: newTask });
       setNewTaskText("");
@@ -54,8 +54,12 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
     dispatch({ type: actionType, payload: taskID });
   };
 
-  function dragOverHandler(e: React.DragEvent<HTMLDivElement>): void {
+  function dragOverHandler(
+    e: React.DragEvent<HTMLDivElement>,
+    box: string
+  ): void {
     e.preventDefault();
+    setBoxCurrent(box);
     if (e.currentTarget.className === "box") {
       e.currentTarget.style.boxShadow = "2px 2px 3px grey";
       setValidDrop(true);
@@ -65,42 +69,39 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
   function dragLeaveHandler(e: React.DragEvent<HTMLDivElement>): void {
     if (e.currentTarget.className === "box") {
       e.currentTarget.style.boxShadow = "none";
+      setValidDrop(false);
     }
   }
 
   function dragStartHandler(
     e: React.DragEvent<HTMLDivElement>,
+    box: string,
     task: Task
   ): void {
     // save the task data in the dataTransfer object
-    e.dataTransfer.setData("text/plain", JSON.stringify(task));
+    e.dataTransfer.setData("task", JSON.stringify(task));
+    e.dataTransfer.setData("sourceBox", box);
   }
 
   function dropHandler(e: React.DragEvent<HTMLDivElement>, box: string): void {
     e.preventDefault();
-    // получаем transferred
-    const transferredData = e.dataTransfer.getData("text/plain");
-    if (transferredData) {
-      const draggedTask = JSON.parse(transferredData) as Task;  //распаршиваем
-      const actionType = `${box}/droppedTask`;       // закидываем в нужный box в Store
+    // get transferred data
+    const transferredData = e.dataTransfer.getData("task");
+    const sourceBox = e.dataTransfer.getData("sourceBox");
+
+    if (sourceBox !== boxCurrent && validDrop) {
+      const draggedTask = JSON.parse(transferredData) as Task;
+      const actionType = `${box}/droppedTask`; // push task into new box in Store
       dispatch({ type: actionType, payload: draggedTask });
+
+      // del task from sourceBox if dropEnd in valid zone
+      dispatch({ type: `${sourceBox}/removeTask`, payload: draggedTask.id });
     }
+
     if (e.currentTarget.className === "box") {
       e.currentTarget.style.boxShadow = "none";
+      setValidDrop(false);
     }
-  }
-
-  function dragEndHandler(
-    box: string,
-    task: Task
-  ): void {
-    // удаляем task из начального box если drop в valid zone
-    if (validDrop) {
-      const actionType = `${box}/removeTask`; 
-      dispatch({ type: actionType, payload: task.id });
-    }
-    // Reset the validDrop state
-    setValidDrop(false);
   }
 
   return (
@@ -108,9 +109,9 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
       <div
         className="box"
         id={props.title}
-        onDragOver={(e) => dragOverHandler(e)} // перетаскивается над допустимой зоной
-        onDragLeave={(e) => dragLeaveHandler(e)} // покидает допустимую область сброса
-        onDrop={(e) => dropHandler(e, props.box)} //элемент сброшен
+        onDragOver={(e) => dragOverHandler(e, props.box)} // drag under valid zone
+        onDragLeave={(e) => dragLeaveHandler(e)} // leave valid zone
+        onDrop={(e) => dropHandler(e, props.box)} // drop element
       >
         <div className="bg-text">{props.title}</div>
         <div className="input-container">
@@ -119,7 +120,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
             label="New task"
             variant="outlined"
             size="small"
-            onChange={(e) => setNewTaskText(e.target.value)} // получаем текст из input
+            onChange={(e) => setNewTaskText(e.target.value)} // get text from input
             value={newTaskText}
           />
           <Button
@@ -138,13 +139,12 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
               <div
                 className="task-container"
                 draggable={true}
-                onDragStart={(e) => dragStartHandler(e, task)} // начал перетаскивание
-                onDragEnd={() => dragEndHandler(props.box, task)} //завершилось перетаскивание
+                onDragStart={(e) => dragStartHandler(e, props.box, task)} // start dragging
               >
                 <Checkbox
                   size="small"
                   checked={task.completed}
-                  onChange={() => handleCompleteTask(task.id)} // по task.id меняем complete в Store у конкретного task
+                  onChange={() => handleCompleteTask(task.id)} // using task.id change complete property in Store
                 />
 
                 <div className="text-container">
@@ -164,7 +164,7 @@ export const TaskBox: React.FunctionComponent<BoxProps> = (props) => {
 
                 <div className="task-actions">
                   <EditModal box={props.box} editorTask={task} id={task.id} />
-                  {/* пробрасываем данные task в модальное окно */}
+                  {/* throw the task data into the modal window */}
                   <IconButton
                     aria-label="delete"
                     size="small"

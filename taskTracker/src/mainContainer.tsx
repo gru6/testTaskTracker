@@ -15,8 +15,8 @@ export const MainContainer: React.FunctionComponent = () => {
   return (
     <>
       <FilterModal tags={findAllTagsInStore()}></FilterModal>
-      <div className="mainContainer">
-        <div className="boxContainer">
+      <div className="main-container">
+        <div className="box-container">
           <div></div>
           <div>Urgent</div>
           <div>Less urgent</div>

@@ -17,6 +17,8 @@ import {
 } from "../utils/taskUtils";
 import { addFilterTag } from "../storage/filterSlice";
 
+/* import { Editor, EditorState, ContentState } from 'draft-js'; */
+
 const containerStyle = {
   position: "absolute",
   top: "50%",
@@ -102,6 +104,13 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
             {highlightHashTag(props.editorTask.fullText)}
             <span>&nbsp;</span>
           </div>
+{/*           <Editor
+      editorState={newText}
+      onChange={(e) => setNewText(e.target.textContent || "")}
+    /> */}
+
+
+
 
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <IconButton
