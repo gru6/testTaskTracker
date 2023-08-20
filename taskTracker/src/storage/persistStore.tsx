@@ -30,8 +30,6 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-store.subscribe(() => {
-  console.log("State updated:", store.getState());
-}); 
+
 
 export { store, persistor };

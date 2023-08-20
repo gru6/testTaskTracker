@@ -47,10 +47,10 @@ export const FilterModal: React.FunctionComponent<FilterModalProps> = (
     const checkedTag = event.target.name;
 
     if (event.target.checked) {
-      // закидываем в store фильтрующие tags
+      // set in store filtering tags
       dispatch(addFilterTag({ filter: [...filteredTag, checkedTag] }));
     } else {
-      // убираем из store фильтрующие tags по checkbox
+      //in store del filtering tags according checkbox
       dispatch(
         addFilterTag({
           filter: filteredTag.filter((tag) => tag !== checkedTag),

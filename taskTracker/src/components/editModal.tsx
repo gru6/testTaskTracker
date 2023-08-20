@@ -17,8 +17,6 @@ import {
 } from "../utils/taskUtils";
 import { addFilterTag } from "../storage/filterSlice";
 
-/* import { Editor, EditorState, ContentState } from 'draft-js'; */
-
 const containerStyle = {
   position: "absolute",
   top: "50%",
@@ -85,17 +83,6 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
             Task
           </Typography>
 
-          {/* было так до contentEditable      
-              <TextField
-            fullWidth
-            label="text"
-            id="text"
-            value={highlightHashTag(props.editorTask.fullText)}
-            sx={{ marginBottom: "50px" }}
-            onBlur={(e) => setNewText(e.target.value)}
-          /> */}
-
-          {/* TODO консоль ругается на contentEditable */}
           <div
             className="div-input"
             contentEditable="true"
@@ -104,14 +91,7 @@ export const EditModal: React.FunctionComponent<EditModalProps> = (props) => {
             {highlightHashTag(props.editorTask.fullText)}
             <span>&nbsp;</span>
           </div>
-{/*           <Editor
-      editorState={newText}
-      onChange={(e) => setNewText(e.target.textContent || "")}
-    /> */}
-
-
-
-
+          
           <div style={{ display: "flex", justifyContent: "space-evenly" }}>
             <IconButton
               aria-label="delete"

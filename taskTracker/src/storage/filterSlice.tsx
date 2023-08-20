@@ -13,7 +13,6 @@ export const filterSlice = createSlice({
     },
     delFilterTag: (state, action: PayloadAction<{filter: string[]}> ) => {
       state = state.filter(item => !action.payload.filter.includes(item));
-      console.log('state из delFilterTag', state)
       return state;
     }
    },
